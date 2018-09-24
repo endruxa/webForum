@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('main');
+    $threads = App\Thread::with('user')->paginate(10);
+    return view('main', compact('threads'));
 });
 
 Auth::routes();
