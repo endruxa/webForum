@@ -4,10 +4,6 @@
 
 @section('content')
 
-    @include('layouts.partials.errors')
-
-    @include('layouts.partials.success')
-
     <div class="row">
         <div class="container-fluid">
             <form class="form-group" action="{{route('thread.store')}}" method="post" role="form" id="create-thread-form">

@@ -19,6 +19,9 @@
 
 <div class="container">
 
+    @include('layouts.partials.errors')
+
+    @include('layouts.partials.success')
 
     {{-- category section --}}
     <div class="row">

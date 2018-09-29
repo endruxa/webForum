@@ -5,6 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * @property \Carbon\Carbon $created_at
+ * @property int $id
+ * @property \Carbon\Carbon $updated_at
+ * @property mixed $threads
+ */
 class User extends Authenticatable
 {
     use Notifiable;
