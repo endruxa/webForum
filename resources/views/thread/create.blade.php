@@ -27,6 +27,12 @@
                     <textarea class="form-control" name="thread" id="" placeholder="Input..." rows="2">{{old('thread')}}</textarea>
                 </div>
 
+                <div class="form-group">
+                    {!! app('captcha')->display(); !!}
+                </div>
+
+                <hr>
+
                 <button type="submit" class="btn btn-primary">Submit</button>
 
             </form>
