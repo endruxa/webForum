@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Mockery\Exception;
 
 class ThreadController extends Controller
@@ -121,4 +122,24 @@ class ThreadController extends Controller
 
         return redirect()->route('thread.index')->withMessage('Thread Deleted!');
     }
+
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function markAsSolution()
+    {
+        $solutionId = Input::get('solutionId');
+        $threadId = Input::get('threadId');
+
+        $thread = Thread::find($threadId);
+        $thread->solution = $solutionId;
+        if ($thread->save()) {
+            if (request()->ajax()) {
+                return response()->json(['status' => 'success', 'message' => 'marked as solution']);
+            }
+            return back()->withMessage('Marked as solution');
+        }
+    }
+
 }

@@ -15,13 +15,23 @@ class CommentController extends Controller
             'body' => 'required'
         ]);
 
-        $comment = new Comment();
-        $comment->body = $request->body;
-        $comment->user_id = auth()->user()->id;
-
-        $thread->comments()->save($comment);
+        //use trait CommentableTrait
+        $thread->addComment($request->body);
 
         return back()->withMessage('Comment created!');
+    }
+
+
+    public function addReplyComment(Request $request, Comment $comment)
+    {
+        $this->validate($request, [
+            'body' => 'required'
+        ]);
+
+        //use trait CommentableTrait
+        $comment->addComment($request->body);
+
+        return back()->withMessage('Reply created!');
     }
 
 
@@ -43,7 +53,7 @@ class CommentController extends Controller
 
         $comment->update($request->all());
 
-        return back()->withMessage('updated');
+        return back()->withMessage('Updated');
 
     }
 
