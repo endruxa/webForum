@@ -28,26 +28,30 @@
     <br>
 
     {{-- Answer/comment --}}
-    <div style="margin-left: 40px" class="comment-list well well-lg">
-        @foreach($thread->comments as $comment)
-           @include('thread.partials.comment-list')
-    </div>
+    @foreach($thread->comments as $comment)
+        <div style="margin-left: 40px" class="comment-list well well-lg">
+               @include('thread.partials.comment-list')
+        </div>
     <hr>
 
     {{--reply to comment--}}
+        <button class="btn btn-xs btn-default" onclick="toggleReply('{{$comment->id}}')">reply</button>
     <br>
-    <button class="btn btn-xs btn-default" onclick="toggleReply('{{$comment->id}}')">reply</button>
     {{--//reply form--}}
-    <br>
     <div style="margin-left: 50px" class="reply-form-{{$comment->id}} hidden">
-        <form action="{{route('replycomment.store', $comment->id)}}" method="post" role="form">
+
+        <form action="{{route('replycomment.store',$comment->id)}}" method="post" role="form">
             {{csrf_field()}}
-            <legend>Create reply</legend>
+            <legend>Create Reply</legend>
+
             <div class="form-group">
                 <input type="text" class="form-control" name="body" id="" placeholder="Reply...">
             </div>
+
+
             <button type="submit" class="btn btn-primary">Reply</button>
         </form>
+
     </div>
     <br>
             @foreach($comment->comments as $reply)
@@ -117,8 +121,8 @@
 @section('js')
 
     <script>
-        function toggleReply(commentId) {
-            $('.reply-form-' + commentId).toggleClass('hidden');
+        function toggleReply(commentId){
+            $('.reply-form-'+commentId).toggleClass('hidden');
         }
     </script>
 
