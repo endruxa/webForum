@@ -25,6 +25,9 @@
 
 <div class="actions">
 
+    <button class="btn btn-default btn-xs" >{{$comment->likes()->count()}}</button>
+    <button class="btn btn-default btn-xs {{$comment->isLiked() ? "liked" : ""}}" onclick="likeIt('{{$comment->id}}',this)"><span class="glyphicon glyphicon-heart"></span></button>
+
     {{--<a href="{{route('thread.edit',$thread->id)}}" class="btn btn-info btn-xs">Edit</a>--}}
     <a class="btn btn-primary btn-xs" data-toggle="modal" href="#{{$comment->id}}">edit</a>
     <div class="modal fade" id="{{$comment->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -72,10 +75,26 @@
 
     <script>
         function markAsSolution(threadId, solutionId,elem) {
-            var csrfToken='{{csrf_token()}}';
+            event.preventDefault();
+            var csrfToken ='{{csrf_token()}}';
             $.post('{{route('markAsSolution')}}', {solutionId: solutionId, threadId: threadId,_token:csrfToken}, function (data) {
                 $(elem).text('Solution');
             });
+        }
+
+        function likeIt(commentId, elem) {
+            event.preventDefault();
+            var csrfToken = '{{csrf_token()}}';
+            $.post('{{route('toggleLike')}}', {commentId: commentId,_token:csrfToken}, function (data) {
+                console.log(data);
+                if(data.message === 'liked'){
+                    $(elem).addClass({color: 'liked'});
+                }else{
+                    $(elem).removeClass({color: 'liked'});
+                }
+
+            });
+
         }
     </script>
 
