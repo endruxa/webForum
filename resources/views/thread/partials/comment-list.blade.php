@@ -5,30 +5,32 @@
     @endif
 
 @else
-    @if(auth()->check())
+    {{--@if(auth()->check())
         @if(auth()->user()->id == $thread->user_id)
-        {{--//solution--}}
-        {{--<form action="{{route('markAsSolution')}}" method="POST">
+        <form action="{{route('markAsSolution')}}" method="POST">
             {{csrf_field()}}
             <input type="hidden" name="threadId" value="{{$thread->id}}">
             <input type="hidden" name="solutionId" value="{{$comment->id}}">
             <input type="submit" class="btn btn-success pull-right" id="{{$comment->id}}" value="Mark As Solution">
         </form>--}}
 
+    @can('update', $thread)
             <div id="markItSolution" class="btn btn-success pull-right" onclick="markAsSolution('{{$thread->id}}', '{{$comment->id}}', this)">
                 Mark As Solution</div>
-        @endif
-    @endif
+    @endcan
+        {{--@endif
+    @endif--}}
 @endif
 
 <lead>{{$comment->user->name}}</lead>
 
 <div class="actions">
 
-    <button class="btn btn-default btn-xs" >{{$comment->likes()->count()}}</button>
-    <button class="btn btn-default btn-xs {{$comment->isLiked() ? "liked" : ""}}" onclick="likeIt('{{$comment->id}}',this)"><span class="glyphicon glyphicon-heart"></span></button>
+    <button class="btn btn-default btn-xs" id="{{$comment->id}}-count">{{$comment->likes()->count()}}</button>
+    <span  class="btn btn-default btn-xs  {{$comment->isLiked() ? "liked" : ""}}" onclick="likeIt('{{$comment->id}}',this)"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></span>
 
     {{--<a href="{{route('thread.edit',$thread->id)}}" class="btn btn-info btn-xs">Edit</a>--}}
+
     <a class="btn btn-primary btn-xs" data-toggle="modal" href="#{{$comment->id}}">edit</a>
     <div class="modal fade" id="{{$comment->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -82,19 +84,21 @@
             });
         }
 
-        function likeIt(commentId, elem) {
-            event.preventDefault();
+        function likeIt(commentId,elem){
             var csrfToken = '{{csrf_token()}}';
-            $.post('{{route('toggleLike')}}', {commentId: commentId,_token:csrfToken}, function (data) {
+            var likesCount = parseInt($('#' + commentId + "-count").text());
+            $.post('{{route('toggleLike')}}', {commentId: commentId, _token:csrfToken}, function (data) {
                 console.log(data);
                 if(data.message === 'liked'){
-                    $(elem).addClass({color: 'liked'});
+                    $(elem).addClass('liked');
+                    $(elem).css({color: 'red'});
+                    $('#' + commentId + "-count").text(likesCount+1);
                 }else{
-                    $(elem).removeClass({color: 'liked'});
+                    $('#' + commentId + "-count").text(likesCount-1);
+                    $(elem).removeClass('liked');
+                    $(elem).css({color: 'black'});
                 }
-
             });
-
         }
     </script>
 

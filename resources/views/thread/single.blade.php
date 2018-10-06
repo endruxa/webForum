@@ -9,7 +9,8 @@
             {!!  \Michelf\Markdown::defaultTransform($thread->thread) !!}
         </div>
         <br>
-    @if(auth()->user()->id == $thread->user_id)
+    {{--@if(auth()->user()->id == $thread->user_id)--}}
+        @can('update', $thread)
         <div class="actions">
             <a href="{{route('thread.edit', $thread->id)}}" class="btn btn-info btn-xs">Edit</a>
 
@@ -20,8 +21,8 @@
                 <input type="submit" class="btn btn-xs btn-danger" value="Delete">
             </form>
         </div>
-
-    @endif
+        @endcan
+   {{-- @endif--}}
 
     </div>
     <hr>

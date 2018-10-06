@@ -31,4 +31,6 @@ Route::post('comment/create/{thread}', 'CommentController@addThreadComment')->na
 Route::post('reply/create/{comment}', 'CommentController@addReplyComment')->name('replycomment.store');
 Route::post('comment/like', 'LikeController@toggleLike')->name('toggleLike');
 
+Route::get('/user/profile/{user}', 'UserProfileController@index')->name('user_profile')->middleware('auth');
+
 

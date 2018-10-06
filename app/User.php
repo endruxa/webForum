@@ -37,4 +37,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Thread::class);
     }
+
+    //get users name from db in route
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
 }
