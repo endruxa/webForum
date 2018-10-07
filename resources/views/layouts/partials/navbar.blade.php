@@ -37,23 +37,8 @@
                 <li><a href="{{ route('register') }}">Register</a></li>
 
                 @else
-                    <li class="dropdown" id="markasread" onclick="markNotificationAsRead({{count(auth()->user()->unreadNotifications)}})">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <span class="glyphicon glyphicon-globe"></span>Notifications
-                            <span class="badge">{{count(auth()->user()->unreadNotifications)}}</span>
-                        </a>
-
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                @forelse(auth()->user()->unreadNotifications as $notification)
-                                        @include('layouts.partials.notification.'.snake_case(class_basename($notification->type)))
-                                    @empty
-                                        <a href="">No unread Notifications</a>
-                                @endforelse
-                            </li>
-                        </ul>
-                    </li>
-
+                {{--notifications--}}
+                <notification :userId="{{auth()->id()}}" :unreads="{{auth()->user()->unreadNotifications}}"></notification>
                    <li class="dropdown">
 
                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
