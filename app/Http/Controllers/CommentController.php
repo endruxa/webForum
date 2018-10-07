@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Notifications\RepliedToThread;
 use App\Thread;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
 
+    /**
+     * @param Request $request
+     * @param Thread $thread
+     * @return mixed
+     */
     public function addThreadComment(Request $request, Thread $thread)
     {
         $this->validate($request, [
@@ -17,6 +23,9 @@ class CommentController extends Controller
 
         //use trait CommentableTrait
         $thread->addComment($request->body);
+
+        /*auth()->user()->notify(new RepliedToThread($thread));*/
+        $thread->user->notify(new RepliedToThread($thread));
 
         return back()->withMessage('Comment created!');
     }

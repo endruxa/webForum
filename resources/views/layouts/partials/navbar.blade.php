@@ -31,35 +31,54 @@
         <ul class="nav navbar-nav navbar-right">
 
         <!-- Authentication Links -->
-            @guest
+            @if(Auth::guest())
 
                 <li><a href="{{ route('login') }}">Login</a></li>
                 <li><a href="{{ route('register') }}">Register</a></li>
+
                 @else
-                    <li class="dropdown">
+                    <li class="dropdown" id="markasread" onclick="markNotificationAsRead({{count(auth()->user()->unreadNotifications)}})">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ Auth::user()->name }}
+                            <span class="glyphicon glyphicon-globe"></span>Notifications
+                            <span class="badge">{{count(auth()->user()->unreadNotifications)}}</span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                             document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <a href="{{ route('user_profile', auth()->user()) }}">
-                                   My Profile
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
+                                @forelse(auth()->user()->unreadNotifications as $notification)
+                                        @include('layouts.partials.notification.'.snake_case(class_basename($notification->type)))
+                                    @empty
+                                        <a href="">No unread Notifications</a>
+                                @endforelse
                             </li>
                         </ul>
                     </li>
-                @endguest
+
+                   <li class="dropdown">
+
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                               {{ Auth::user()->name }}
+                           </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                                 document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <a href="{{ route('user_profile', auth()->user()) }}">
+                                       My Profile
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
+                   </li>
+                @endif
             </ul>
         </div>
     </div>
