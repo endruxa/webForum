@@ -48,11 +48,16 @@ class ThreadController extends Controller
             'subject' => 'required|min:3',
             'type'    => 'required',
             'thread' => 'required|min:10',
-            'g-recaptcha-response' => 'required|captcha'
+            /*'g-recaptcha-response' => 'required|captcha'*/
         ]);
 
         //store
-        auth()->user()->threads()->create($request->all());
+        $thread = auth()->user()->threads()->create($request->all());
+
+        //upload file
+        if ($request->has('image')){
+            $thread->update(['image' => $request->file('image')->store('threadimage', 'public')]);
+        }
 
         //redirect
         return back()->withMessage('Thread Created!');

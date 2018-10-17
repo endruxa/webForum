@@ -1,15 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
         <div class="navbar-header">
-
-            <!-- Collapsed Hamburger -->
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#app-navbar-collapse">
-                <span class="sr-only">Toggle Navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -19,16 +10,10 @@
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
-
-            <!-- Left Side Of Navbar -->
-
-            <ul class="nav navbar-nav">
-                &nbsp;
-            </ul>
-
+        </div>
         <!-- Right Side Of Navbar -->
 
-        <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right">
 
         <!-- Authentication Links -->
             @if(Auth::guest())
@@ -38,7 +23,25 @@
 
                 @else
                 {{--notifications--}}
-                <notification :userId="{{auth()->id()}}" :unreads="{{auth()->user()->unreadNotifications}}"></notification>
+
+                    <li class="dropdown" id="markasread" onclick="markNotificationAsRead({{count(auth()->user()->unreadNotifications)}})">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="glyphicon glyphicon-globe"></span>Notifications
+                            <span class="badge">{{count(auth()->user()->unreadNotifications)}}</span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                @forelse(auth()->user()->unreadNotifications as $notification)
+                                    @include('layouts.partials.notification.'.snake_case(class_basename($notification->type)))
+                                @empty
+                                    <a href="">No unread Notifications</a>
+                                @endforelse
+                            </li>
+                        </ul>
+                    </li>
+
+                {{--<notification :userid="{{auth()->id()}}" :unreads="{{auth()->user()->unreadNotifications}}">@include('layouts.partials.notification.replied_to_thread')</notification>--}}
                    <li class="dropdown">
 
                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -66,5 +69,5 @@
                 @endif
             </ul>
         </div>
-    </div>
+   {{-- </div>--}}
 </nav>

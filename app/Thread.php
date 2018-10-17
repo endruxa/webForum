@@ -16,8 +16,6 @@ class Thread extends Model
 
     protected $guarded = [];
 
-    protected $fillable = ['id','subject', 'thread', 'type', 'user_id', 'solution'];
-
 
    public function user()
    {

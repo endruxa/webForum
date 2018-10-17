@@ -9,6 +9,9 @@
             {!!  \Michelf\Markdown::defaultTransform($thread->thread) !!}
         </div>
         <br>
+
+        <img src="{{asset("storage/$thread->image")}}">
+
     {{--@if(auth()->user()->id == $thread->user_id)--}}
         @can('update', $thread)
         <div class="actions">
@@ -104,7 +107,7 @@
                 </div>
             @endforeach
 
-        @endforeach
+    @endforeach
     <br><br>
 
     <div class="comment-form">
@@ -122,8 +125,9 @@
 @section('js')
 
     <script>
-        function toggleReply(commentId){
-            $('.reply-form-'+commentId).toggleClass('hidden');
+        event.preventDefault();
+        function toggleReply(commentid){
+            $('.reply-form-' + commentid).toggleClass('hidden');
         }
     </script>
 

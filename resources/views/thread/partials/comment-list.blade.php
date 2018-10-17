@@ -76,6 +76,7 @@
 @section('js')
 
     <script>
+
         function markAsSolution(threadId, solutionId,elem) {
             event.preventDefault();
             var csrfToken ='{{csrf_token()}}';
